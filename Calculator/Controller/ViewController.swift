@@ -12,30 +12,30 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
     private var isFinishedTyping: Bool = true
+    private var displayValue: Double {
+        get {
+            guard let number = Double(displayLabel.text!) else {
+                fatalError("Failed to convert display label to double type.")
+            }
+            return number
+        }
+        set {
+            displayLabel.text = String(newValue)
+        }
+    }
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         isFinishedTyping = true
-        guard let number = Double(displayLabel.text!) else {
-            fatalError("Failed to convert display label to double type.")
-        }
+        
         
         if let calcMethod = sender.currentTitle {
-            switch calcMethod {
-            case "+/-":
-                displayLabel.text = String(number * -1)
-                break
-            case "AC":
-                displayLabel.text = "0"
-                break
-            case "%":
-                displayLabel.text = String(number / 100)
-                break
-            default:
-                displayLabel.text = String(number)
-                break
-            }
+            let calculator = CalculationLogic(n: displayValue)
             
+            guard let value = calculator.updateNumbers(with: calcMethod) else {
+                fatalError("Having issue to get number calculated")
+            }
+            displayValue = value
         }
     }
 
@@ -47,11 +47,7 @@ class ViewController: UIViewController {
                 isFinishedTyping = false
             } else {
                 if numValue == "." {
-                    guard let currentValue = Double(displayLabel.text!) else {
-                        fatalError("Having issue to check if number is valid")
-                    }
-                    
-                    let isInt = floor(currentValue) == currentValue
+                    let isInt = floor(displayValue) == displayValue
                     if !isInt {
                         return
                     }
