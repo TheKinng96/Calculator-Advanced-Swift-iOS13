@@ -23,15 +23,13 @@ class ViewController: UIViewController {
             displayLabel.text = String(newValue)
         }
     }
+    private var calculator = CalculationLogic()
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         isFinishedTyping = true
-        
-        
+        calculator.setNumber(displayValue)
         if let calcMethod = sender.currentTitle {
-            let calculator = CalculationLogic(n: displayValue)
-            
             guard let value = calculator.updateNumbers(with: calcMethod) else {
                 fatalError("Having issue to get number calculated")
             }

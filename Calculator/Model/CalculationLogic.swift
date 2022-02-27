@@ -9,22 +9,25 @@
 import Foundation
 
 struct CalculationLogic {
-    private var number: Double = 0
+    private var number: Double?
     
-    init (n: Double) {
-        self.number = n
+    mutating func setNumber(_ number: Double) {
+        self.number = number
     }
     
     func updateNumbers(with calcMethod: String) -> Double? {
-        switch calcMethod {
-        case "+/-":
-            return number * -1
-        case "AC":
-            return 0
-        case "%":
-            return number * 0.01
-        default:
-            return nil
+        if let n = number {
+            switch calcMethod {
+            case "+/-":
+                return n * -1
+            case "AC":
+                return 0
+            case "%":
+                return n * 0.01
+            default:
+                return nil
+            }
         }
+        return nil
     }
 }
