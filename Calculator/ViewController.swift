@@ -11,23 +11,52 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
-    var isFinishedTyping: Bool = true
+    private var isFinishedTyping: Bool = true
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
+        isFinishedTyping = true
+        guard let number = Double(displayLabel.text!) else {
+            fatalError("Failed to convert display label to double type.")
+        }
         
-        //What should happen when a non-number button is pressed
-    
+        if let calcMethod = sender.currentTitle {
+            switch calcMethod {
+            case "+/-":
+                displayLabel.text = String(number * -1)
+                break
+            case "AC":
+                displayLabel.text = "0"
+                break
+            case "%":
+                displayLabel.text = String(number / 100)
+                break
+            default:
+                displayLabel.text = String(number)
+                break
+            }
+            
+        }
     }
 
     
     @IBAction func numButtonPressed(_ sender: UIButton) {
-        if let numValue = sender.currentTitle, var text = displayLabel.text {
+        if let numValue = sender.currentTitle {
             if isFinishedTyping {
-                text = numValue
+                displayLabel.text = numValue
                 isFinishedTyping = false
             } else {
-                text = text + numValue
+                if numValue == "." {
+                    guard let currentValue = Double(displayLabel.text!) else {
+                        fatalError("Having issue to check if number is valid")
+                    }
+                    
+                    let isInt = floor(currentValue) == currentValue
+                    if !isInt {
+                        return
+                    }
+                }
+                displayLabel.text = displayLabel.text! + numValue
             }
         }
     
