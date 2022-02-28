@@ -45,7 +45,9 @@ class ViewController: UIViewController {
                 isFinishedTyping = false
             } else {
                 if numValue == "." {
+                    // 3.5 -> 4 == 3 means it has a decimal point ald
                     let isInt = floor(displayValue) == displayValue
+                    print(isInt)
                     if !isInt {
                         return
                     }

@@ -29,9 +29,10 @@ struct CalculationLogic {
                 return calculate(n)
             default:
                 intermediateCalculation = (n1: n, calcMethod: calcMethod)
+                return 0
             }
         }
-        return nil
+        return intermediateCalculation?.n1 ?? 0
     }
     
     func calculate(_ n2: Double) -> Double? {
@@ -41,14 +42,15 @@ struct CalculationLogic {
                 return n2 + n1
             case "-":
                 return n2 - n1
-            case "x":
+            case "×":
                 return n2 * n1
             case "÷":
                 return n1 / n2
             default:
-                return nil
+                // User hasnt entered the second number yet
+                return n1
             }
         }
-        return nil
+        return intermediateCalculation?.n1
     }
 }
